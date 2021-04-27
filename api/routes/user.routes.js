@@ -7,7 +7,7 @@ const router = express.Router()
 router.route('/api/users')
   .post(userCtrl.create)
 
-router.route('/api/users')
+router.route('/api/users') // remove later
   .get(userCtrl.test)
 
 router.route('/api/users/:userId')
