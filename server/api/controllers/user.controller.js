@@ -18,6 +18,12 @@ const create = async (req, res) => {
   }
 }
 
+const test = (req, res) => {
+  return res.status(200).json({
+    message: "Testing User"
+  })
+}
+
 /**
  * Load user and append to req.
  */
@@ -78,6 +84,7 @@ const remove = async (req, res) => {
 }
 
 module.exports = {
+  test,
   create,
   userByID,
   read,

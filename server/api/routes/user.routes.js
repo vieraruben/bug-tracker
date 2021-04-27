@@ -7,6 +7,9 @@ const router = express.Router()
 router.route('/api/users')
   .post(userCtrl.create)
 
+router.route('/api/users')
+  .get(userCtrl.test)
+
 router.route('/api/users/:userId')
   .get(authCtrl.requireSignin, userCtrl.read)
   .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)
