@@ -6,6 +6,8 @@ const cors = require('cors')
 const helmet = require('helmet')
 
 const userRoutes = require('./api/routes/user.routes')
+const projectRoutes = require('./api/routes/project.routes')
+const ticketRoutes = require('./api/routes/ticket.routes')
 const authRoutes = require('./api/routes/auth.routes')
 
 const app = express()
@@ -21,6 +23,8 @@ app.use(cors())
 
 // mount routes
 app.use('/', userRoutes)
+app.use('/', projectRoutes)
+app.use('/', ticketRoutes)
 app.use('/', authRoutes)
 
 
