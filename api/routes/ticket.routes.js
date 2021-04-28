@@ -11,7 +11,7 @@ router.route('/api/tickets/by/:projectId')
 router.route('/api/tickets/:ticketId/comment')
   .post(authCtrl.requireSignin, ticketCtrl.comment)
 
-router.route('/api/tickets/:ticketId/uncomment')
+router.route('/api/tickets/:ticketId/uncomment/:commentId')
   .delete(authCtrl.requireSignin, ticketCtrl.uncomment)
 
 router.route('/api/tickets/:ticketId')
