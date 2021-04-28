@@ -16,11 +16,17 @@ router.route('/api/tickets/:ticketId/uncomment/:commentId')
 
 router.route('/api/tickets/:ticketId')
   .get(authCtrl.requireSignin, ticketCtrl.read)
-  .put(authCtrl.requireSignin, authCtrl.hasAuthorization, ticketCtrl.update)
-  .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, ticketCtrl.remove)
+  .put(authCtrl.requireSignin, ticketCtrl.update)
+  .delete(authCtrl.requireSignin, ticketCtrl.remove)
 
 router.route('/api/tickets')
   .post(authCtrl.requireSignin, ticketCtrl.create)
+
+router.route('/api/:userId/tickets/:ticketId/upload')
+  .post(authCtrl.requireSignin, ticketCtrl.upload)
+
+router.route('/api/:userId/tickets/:ticketId/delete/:fileName')
+  .delete(authCtrl.requireSignin, ticketCtrl.deleteFile)
 
 router.param('userId', userCtrl.userByID)
 router.param('ticketId', ticketCtrl.ticketByID)

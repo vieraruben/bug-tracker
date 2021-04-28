@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser')
 const compress = require('compression')
 const cors = require('cors')
 const helmet = require('helmet')
+const fileUpload = require('express-fileupload');
 
 const userRoutes = require('./api/routes/user.routes')
 const projectRoutes = require('./api/routes/project.routes')
@@ -20,6 +21,16 @@ app.use(helmet())
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors())
+
+// enable files upload
+app.use(fileUpload({
+  createParentPath: true,
+  limits: { 
+    fileSize: 1 * 1024 * 1024 * 1024 //1MB max file(s) size
+},
+}));
+
+app.use(express.static('attachments'));
 
 // mount routes
 app.use('/', userRoutes)
