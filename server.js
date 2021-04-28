@@ -8,7 +8,8 @@ mongoose.Promise = global.Promise
 mongoose.connect(config.mongoUri, {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false
 })
 
 mongoose.connection.on('error', () => {

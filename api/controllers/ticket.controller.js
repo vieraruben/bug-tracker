@@ -96,9 +96,8 @@ const comment = async (req, res) => {
 }
 
 const uncomment = async (req, res) => {
-  let comment = req.body
   try{
-    let result = await Ticket.findByIdAndUpdate(req.params.ticketId, {$pull: {comments: {_id: comment._id}}}, {new: true})
+    let result = await Ticket.findByIdAndUpdate(req.params.ticketId, {$pull: {comments: {_id: req.params.commentId}}}, {new: true})
                           .populate('comments.createdBy', '_id name')
                           .populate('createdBy', '_id name')
                           .exec()
