@@ -1,14 +1,14 @@
-const Ticket = require('../models/ticket.model')
+const Project = require('../models/project.model')
 const extend = require('lodash/extend')
 const errorHandler = require('../helpers/dbErrorHandler')
 const config = require('../../config/config')
 
 const create = async (req, res) => {
-  const ticket = new Ticket(req.body)
+  const project = new Project(req.body)
   try {
-    await ticket.save()
+    await project.save()
     return res.status(200).json({
-      message: "Ticket created!"
+      message: "Project created!"
     })
   } catch (err) {
     return res.status(400).json({
@@ -22,20 +22,20 @@ const read = (req, res) => {
 }
 
 /**
- * Load ticket and append to req.
+ * Load project and append to req.
  */
-const ticketByID = async (req, res, next, id) => {
+const projectByID = async (req, res, next, id) => {
   try {
-    let ticket = await Ticket.findById(id)
-    if (!ticket)
+    let project = await Project.findById(id)
+    if (!project)
       return res.status('400').json({
-        error: "Ticket not found"
+        error: "Project not found"
       })
-    req.ticket = ticket
+    req.project = project
     next()
   } catch (err) {
     return res.status('400').json({
-      error: "Could not retrieve ticket"
+      error: "Could not retrieve project"
     })
   }
 }
@@ -47,6 +47,19 @@ const update = async (req, res) => {
     ticket.updated = Date.now()
     await ticket.save()
     res.json(ticket)
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err)
+    })
+  }
+}
+
+const listByUser = async (req, res) => {
+  try {
+    let projects = await Project.find({ createdBy: req.profile._id })
+      .populate('createdBy', '_id name')
+      .exec()
+    res.json(projects)
   } catch (err) {
     return res.status(400).json({
       error: errorHandler.getErrorMessage(err)
@@ -67,9 +80,10 @@ const remove = async (req, res) => {
 }
 
 module.exports = {
+  listByUser,
   read,
   create,
-  ticketByID,
+  projectByID,
   remove,
   update
 }

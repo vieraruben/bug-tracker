@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Ticket = require('../models/project.model')
 
 const ProjectSchema = new mongoose.Schema({
   name: {
@@ -10,6 +11,11 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: 'Description is required'
+  },
+  createdBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
+  created: {
+    type: Date,
+    default: Date.now
   }
 })
 

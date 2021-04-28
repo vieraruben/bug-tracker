@@ -1,14 +1,14 @@
-const Ticket = require('../models/project.model')
+const Ticket = require('../models/ticket.model')
 const extend = require('lodash/extend')
 const errorHandler = require('../helpers/dbErrorHandler')
 const config = require('../../config/config')
 
 const create = async (req, res) => {
-  const project = new Ticket(req.body)
+  const ticket = new Ticket(req.body)
   try {
-    await project.save()
+    await ticket.save()
     return res.status(200).json({
-      message: "Project created!"
+      message: "Ticket created!"
     })
   } catch (err) {
     return res.status(400).json({
@@ -24,29 +24,43 @@ const read = (req, res) => {
 /**
  * Load ticket and append to req.
  */
-const projectByID = async (req, res, next, id) => {
+const ticketByID = async (req, res, next, id) => {
   try {
-    let project = await Ticket.findById(id)
-    if (!project)
+    let ticket = await Ticket.findById(id)
+    if (!ticket)
       return res.status('400').json({
-        error: "Project not found"
+        error: "Ticket not found"
       })
-    req.project = project
+    req.ticket = ticket
     next()
   } catch (err) {
     return res.status('400').json({
-      error: "Could not retrieve project"
+      error: "Could not retrieve ticket"
+    })
+  }
+}
+
+const listByProject = async (req, res) => {
+  try {
+    let tickets = await Ticket.find({ project: req.params.projectId })
+      .populate('createdBy', '_id name')
+      .populate('project', '_id name')
+      .exec()
+    res.json(tickets)
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err)
     })
   }
 }
 
 const update = async (req, res) => {
   try {
-    let project = req.project
-    project = extend(project, req.body)
-    project.updated = Date.now()
-    await project.save()
-    res.json(project)
+    let ticket = req.ticket
+    ticket = extend(ticket, req.body)
+    ticket.updated = Date.now()
+    await ticket.save()
+    res.json(ticket)
   } catch (err) {
     return res.status(400).json({
       error: errorHandler.getErrorMessage(err)
@@ -56,9 +70,9 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    let project = req.project
-    let deletedProject = await project.remove()
-    res.json(deletedProject)
+    let ticket = req.ticket
+    let deletedTicket = await ticket.remove()
+    res.json(deletedTicket)
   } catch (err) {
     return res.status(400).json({
       error: errorHandler.getErrorMessage(err)
@@ -66,10 +80,43 @@ const remove = async (req, res) => {
   }
 }
 
+const comment = async (req, res) => {
+  let comment = req.body
+  try{
+    let result = await Ticket.findByIdAndUpdate(req.params.ticketId, {$push: {comments: comment}}, {new: true})
+                            .populate('comments.createdBy', '_id name')
+                            .populate('createdBy', '_id name')
+                            .exec()
+    res.json(result)
+  }catch(err){
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err)
+    })
+  }
+}
+
+const uncomment = async (req, res) => {
+  let comment = req.body
+  try{
+    let result = await Ticket.findByIdAndUpdate(req.params.ticketId, {$pull: {comments: {_id: comment._id}}}, {new: true})
+                          .populate('comments.createdBy', '_id name')
+                          .populate('createdBy', '_id name')
+                          .exec()
+    res.json(result)
+  }catch(err){
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err)
+    })
+  }
+}
+
 module.exports = {
+  comment,
+  uncomment,
+  listByProject,
   read,
   create,
-  projectByID,
+  ticketByID,
   remove,
   update
 }
