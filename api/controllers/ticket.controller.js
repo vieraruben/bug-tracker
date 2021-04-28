@@ -1,14 +1,14 @@
-const Ticket = require('../models/ticket.model')
+const Ticket = require('../models/project.model')
 const extend = require('lodash/extend')
 const errorHandler = require('../helpers/dbErrorHandler')
 const config = require('../../config/config')
 
 const create = async (req, res) => {
-  const ticket = new Ticket(req.body)
+  const project = new Ticket(req.body)
   try {
-    await ticket.save()
+    await project.save()
     return res.status(200).json({
-      message: "Ticket created!"
+      message: "Project created!"
     })
   } catch (err) {
     return res.status(400).json({
@@ -18,35 +18,35 @@ const create = async (req, res) => {
 }
 
 const read = (req, res) => {
-  return res.json(req.project)
+  return res.json(req.ticket)
 }
 
 /**
  * Load ticket and append to req.
  */
-const ticketByID = async (req, res, next, id) => {
+const projectByID = async (req, res, next, id) => {
   try {
-    let ticket = await Ticket.findById(id)
-    if (!ticket)
+    let project = await Ticket.findById(id)
+    if (!project)
       return res.status('400').json({
-        error: "Ticket not found"
+        error: "Project not found"
       })
-    req.ticket = ticket
+    req.project = project
     next()
   } catch (err) {
     return res.status('400').json({
-      error: "Could not retrieve ticket"
+      error: "Could not retrieve project"
     })
   }
 }
 
 const update = async (req, res) => {
   try {
-    let ticket = req.ticket
-    ticket = extend(ticket, req.body)
-    ticket.updated = Date.now()
-    await ticket.save()
-    res.json(ticket)
+    let project = req.project
+    project = extend(project, req.body)
+    project.updated = Date.now()
+    await project.save()
+    res.json(project)
   } catch (err) {
     return res.status(400).json({
       error: errorHandler.getErrorMessage(err)
@@ -56,9 +56,9 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    let ticket = req.ticket
-    let deletedTicket = await ticket.remove()
-    res.json(deletedTicket)
+    let project = req.project
+    let deletedProject = await project.remove()
+    res.json(deletedProject)
   } catch (err) {
     return res.status(400).json({
       error: errorHandler.getErrorMessage(err)
@@ -69,7 +69,7 @@ const remove = async (req, res) => {
 module.exports = {
   read,
   create,
-  ticketByID,
+  projectByID,
   remove,
   update
 }

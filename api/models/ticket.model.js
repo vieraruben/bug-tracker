@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const ProjectSchema = new mongoose.Schema({
+const TicketSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
@@ -13,4 +13,4 @@ const ProjectSchema = new mongoose.Schema({
   }
 })
 
-module.exports = mongoose.model('Project', ProjectSchema)
+module.exports = mongoose.model('Ticket', TicketSchema)
