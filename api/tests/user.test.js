@@ -18,7 +18,6 @@ test('get User by ID', async () => {
 
   const response = await axios.get('http://localhost:5000/api/users', config)
   let data = response.data
-  console.log('data ' + JSON.stringify(data))
 
   expect(data[0].name + '-' + data[0].email).toBe("Ruben-v@g.com")
 
