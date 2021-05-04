@@ -11,16 +11,6 @@ const TicketSchema = new mongoose.Schema({
   //   trim: true,
   //   required: 'Description is required'
   // },
-  // state: {
-  //   type: String,
-  //   trim: true,
-  //   required: 'State is required'
-  // },
-  // priority: {
-  //   type: String,
-  //   trim: true,
-  //   required: 'Priority is required'
-  // },
   project: { type: mongoose.Schema.ObjectId, ref: 'Project', required: 'Project is required' },
   comments: [{
     text: String,

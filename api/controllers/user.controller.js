@@ -6,9 +6,10 @@ const config = require('../../config/config')
 const create = async (req, res) => {
   const user = new User(req.body)
   try {
-    await user.save()
+    let newuser = await user.save()
     return res.status(200).json({
-      message: "Successfully signed up!"
+      message: "Successfully signed up!",
+      user: newuser
     })
   } catch (err) {
     return res.status(400).json({
@@ -21,6 +22,18 @@ const test = (req, res) => {
   return res.status(200).json({
     message: "Testing User Ruben"
   })
+}
+
+const allUsers = async (req, res) => {
+  try {
+    let users = await User.find()
+      .exec()
+    res.status(200).json(users)
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err)
+    })
+  }
 }
 
 /**
@@ -80,6 +93,7 @@ const remove = async (req, res) => {
 }
 
 module.exports = {
+  allUsers,
   test,
   create,
   userByID,
