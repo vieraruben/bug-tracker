@@ -1,5 +1,4 @@
 const User = require('../models/user.model')
-// const Product = require('../models/product.model')
 const extend = require('lodash/extend')
 const errorHandler = require('../helpers/dbErrorHandler')
 const config = require('../../config/config')

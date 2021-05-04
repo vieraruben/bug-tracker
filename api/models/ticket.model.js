@@ -21,21 +21,42 @@ const TicketSchema = new mongoose.Schema({
   //   trim: true,
   //   required: 'Priority is required'
   // },
-  project: {type: mongoose.Schema.ObjectId, ref: 'Project', required: 'Project is required'},
+  project: { type: mongoose.Schema.ObjectId, ref: 'Project', required: 'Project is required' },
   comments: [{
     text: String,
-    created: { type: Date, default: Date.now },
-    createdBy: { type: mongoose.Schema.ObjectId, ref: 'User'}
+    createdBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    updatedBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    created: {
+      type: Date,
+      default: Date.now
+    },
+    updated: {
+      type: Date,
+      default: Date.now
+    }
   }],
   attachments: [{
     name: String,
     description: String,
     url: String,
-    created: { type: Date, default: Date.now },
-    createdBy: { type: mongoose.Schema.ObjectId, ref: 'User'}
+    createdBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    updatedBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    created: {
+      type: Date,
+      default: Date.now
+    },
+    updated: {
+      type: Date,
+      default: Date.now
+    }
   }],
-  createdBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
+  createdBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  updatedBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
   created: {
+    type: Date,
+    default: Date.now
+  },
+  updated: {
     type: Date,
     default: Date.now
   }

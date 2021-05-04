@@ -20,7 +20,13 @@ const UserSchema = new mongoose.Schema({
   },
   salt: String,
   updated: Date,
+  createdBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  updatedBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
   created: {
+    type: Date,
+    default: Date.now
+  },
+  updated: {
     type: Date,
     default: Date.now
   }
