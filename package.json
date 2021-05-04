@@ -20,12 +20,12 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
     "mongoose": "^5.11.15",
-    "node-fetch": "^2.6.1",
     "nodemon": "^2.0.6"
   },
   "license": "ISC",
   "author": "Ruben Viera",
   "devDependencies": {
+    "axios": "^0.21.1",
     "jest": "^26.6.3"
   }
 }

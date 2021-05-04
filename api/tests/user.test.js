@@ -1,14 +1,7 @@
-function sum(a, b) {
-    return a + b;
-}
+const axios = require('axios')
 
-
-const fetch = require('node-fetch');
-const userCtrl = require('../controllers/user.controller')
-
-test('adds 1 + 2 to equal 3', () => {
-  fetch('http://localhost:5000/api/users')
-    .then(res => res.text())
-    .then(text => console.log(text))
-  expect(sum(1, 2)).toBe(3);
+test('adds 1 + 2 to equal 3', async () => {
+  const response = await axios.get('http://localhost:5000/api/users')
+  let data = response.data
+  expect(data.message).toBe("Testing User Ruben");
 })
